@@ -54,28 +54,31 @@ public class Laboratory {
 
         Map<String, Double> reaction = reactions.get(product);
 
-        double maxQuantityMakable = quantity;
+        double maxBasedOnSubstances = reaction.entrySet().stream()
+                .mapToDouble(entry -> {
+                    String substance = entry.getKey();
+                    Double neededQuantityPerUnit = entry.getValue();
+                    Double availableQuantity = getQuantity(substance);
 
-        for(Map.Entry<String, Double> reactionSubstance : reaction.entrySet()) {
-            String substance = reactionSubstance.getKey();
-            Double neededQuantityPerUnit = reactionSubstance.getValue();
+                    if(availableQuantity == null)
+                        throw new IllegalArgumentException("At least one substance is missing");
 
-            if(getQuantity(substance) == null)
-                throw new IllegalArgumentException("At least one substance is missing");
+                    double totalQuantityNeeded = quantity * neededQuantityPerUnit;
 
-            double totalQuantityNeeded = quantity * neededQuantityPerUnit;
+                    if(totalQuantityNeeded > availableQuantity)
+                        return availableQuantity / neededQuantityPerUnit;
+                    else
+                        return quantity;
+                })
+                .min()
+                .orElse(quantity);
 
-            if(totalQuantityNeeded > getQuantity(substance))
-                maxQuantityMakable = getQuantity(substance) / neededQuantityPerUnit;
-        }
-
-        double finalMaxQuantityMakable = maxQuantityMakable;
         reaction.forEach((substance, neededQuantityPerUnit) -> {
-            double totalQuantityNeeded = finalMaxQuantityMakable * neededQuantityPerUnit;
+            double totalQuantityNeeded = maxBasedOnSubstances * neededQuantityPerUnit;
             add(substance, -totalQuantityNeeded);
         });
 
-        add(product, finalMaxQuantityMakable);
+        add(product, maxBasedOnSubstances);
     }
 
     void checkSubstanceValidity(String substance){
