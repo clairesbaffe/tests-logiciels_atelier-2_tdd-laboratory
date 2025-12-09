@@ -154,4 +154,11 @@ class LaboratoryTests {
         assertEquals(0.98, laboratory.getQuantity("B"));
         assertEquals(2.76, laboratory.getQuantity("C"), 0.0001);
     }
+
+    @Test
+    void makeNonExistingProduct(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.make("ZZZ", 1.2);
+        });
+    }
 }
