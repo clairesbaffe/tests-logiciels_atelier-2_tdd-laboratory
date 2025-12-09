@@ -48,6 +48,8 @@ public class Laboratory {
     }
 
     void make(String product, Double quantity){
+        checkProductValidity(product);
+
         Map<String, Double> reaction = reactions.get(product);
 
         reaction.forEach((substance, neededQuantityPerUnit) -> {
@@ -61,6 +63,11 @@ public class Laboratory {
     void checkSubstanceValidity(String substance){
         if(!knownSubstances.contains(substance))
             throw new IllegalArgumentException("This substance does not exist");
+    }
+
+    void checkProductValidity(String product){
+        if(!reactions.containsKey(product))
+            throw new IllegalArgumentException("This product does not exist");
     }
 
     void checkSubstanceAndProductValidity(String substance){
