@@ -32,7 +32,7 @@ public class Laboratory {
         if(currentStock == null){
             stocks.put(substance, quantity);
         } else {
-            Double newStock = stocks.get(substance) + quantity;
+            double newStock = stocks.get(substance) + quantity;
 
             if(newStock == 0.0){
                 stocks.remove(substance);
