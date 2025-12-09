@@ -98,4 +98,12 @@ class LaboratoryTests {
             laboratory.add("A", -2.0);
         });
     }
+
+    @Test
+    void removeAllStock(){
+        laboratory.add("A", 2.0);
+        laboratory.add("A", -2.0);
+
+        assertNull(laboratory.getQuantity("A"));
+    }
 }
