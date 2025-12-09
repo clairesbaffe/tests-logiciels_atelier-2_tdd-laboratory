@@ -39,7 +39,7 @@ class LaboratoryTests {
     }
 
     @Test
-    void initLaboratoryWithUnexistingSubstancesInReactions(){
+    void initLaboratoryWithNonExistingSubstancesInReactions(){
         List<String> list = List.of("A", "B", "C", "D");
         Map<String, Map<String, Double>> reactions = Map.of(
                 "A", Map.of("B", 2.1, "C", 1.2),

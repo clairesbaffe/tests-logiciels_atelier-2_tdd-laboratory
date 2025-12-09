@@ -1,8 +1,6 @@
 package com.tdd.laboratory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Laboratory {
     List<String> knownSubstances;
@@ -15,26 +13,20 @@ public class Laboratory {
     ){
         knownSubstances = substances;
 
-        initReactions.forEach((key, reaction) -> reaction.forEach((substance, quantity) -> {
-            if(!knownSubstances.contains(substance)){
-                throw new IllegalArgumentException("An unexisting substance is present in reactions list");
-            }
-        }));
+        initReactions.values().stream()
+                .flatMap(reaction -> reaction.keySet().stream())
+                .forEach(this::checkSubstanceValid);
 
         reactions = initReactions;
     }
 
     Double getQuantity(String substance) {
-        if(!knownSubstances.contains(substance))
-            throw new IllegalArgumentException("This substance does not exist");
-
+        checkSubstanceValid(substance);
         return stocks.get(substance);
     }
 
     void add(String substance, Double quantity){
-        if(!knownSubstances.contains(substance))
-            throw new IllegalArgumentException("This substance does not exist");
-
+        checkSubstanceValid(substance);
         Double currentStock = stocks.get(substance);
 
         if(quantity == 0)
@@ -53,5 +45,10 @@ public class Laboratory {
                 stocks.replace(substance, newStock);
             }
         }
+    }
+
+    void checkSubstanceValid(String substance){
+        if(!knownSubstances.contains(substance))
+            throw new IllegalArgumentException("This substance does not exist");
     }
 }
