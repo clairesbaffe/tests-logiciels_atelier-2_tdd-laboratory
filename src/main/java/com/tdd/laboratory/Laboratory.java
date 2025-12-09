@@ -2,12 +2,17 @@ package com.tdd.laboratory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Laboratory {
     List<String> knownSubstances;
     HashMap<String, Double> stocks = new HashMap<>();
+    Map<String, Map<String, Double>> reactions;
 
-    public Laboratory(List<String> substances){
+    public Laboratory(
+            List<String> substances,
+            Map<String, Map<String, Double>> initReactions
+    ){
         knownSubstances = substances;
     }
 

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,15 +14,42 @@ class LaboratoryTests {
 
     @BeforeEach
     void setup(){
-        laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+        laboratory = new Laboratory(
+                List.of("A", "B", "C", "D"),
+                Map.of(
+                        "A", Map.of("B", 2.1, "C", 1.2),
+                        "C", Map.of("B", 3.4, "D", 0.8),
+                        "D", Map.of("A", 5.0, "B", 1.2)
+                )
+        );
         laboratory.stocks.clear();
     }
 
     @Test
     void initLaboratory() {
         List<String> list = List.of("A", "B", "C", "D");
+        Map<String, Map<String, Double>> reactions = Map.of(
+                "A", Map.of("B", 2.1, "C", 1.2),
+                "C", Map.of("B", 3.4, "D", 0.8),
+                "D", Map.of("A", 5.0, "B", 1.2)
+        );
 
         assertEquals(list, laboratory.knownSubstances);
+        assertEquals(reactions, laboratory.reactions);
+    }
+
+    @Test
+    void initLaboratoryWithUnexistingSubstancesInReactions(){
+        List<String> list = List.of("A", "B", "C", "D");
+        Map<String, Map<String, Double>> reactions = Map.of(
+                "A", Map.of("B", 2.1, "C", 1.2),
+                "C", Map.of("E", 3.4, "D", 0.8),
+                "D", Map.of("A", 5.0, "B", 1.2)
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Laboratory(list, reactions);
+        });
     }
 
     @Test
