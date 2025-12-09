@@ -49,6 +49,8 @@ public class Laboratory {
 
     void make(String product, Double quantity){
         checkProductValidity(product);
+        if(quantity <= 0)
+            throw new IllegalArgumentException("Cannot make negative quantity");
 
         Map<String, Double> reaction = reactions.get(product);
 
