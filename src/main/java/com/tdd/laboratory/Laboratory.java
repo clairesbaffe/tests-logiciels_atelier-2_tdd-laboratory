@@ -19,6 +19,6 @@ public class Laboratory {
     }
 
     void add(String substance, Double quantity){
-
+        stocks.put(substance, quantity);
     }
 }
