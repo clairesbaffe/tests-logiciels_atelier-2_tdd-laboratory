@@ -24,23 +24,16 @@ public class Laboratory {
 
         Double currentStock = stocks.get(substance);
 
-        if(quantity == 0){
+        if(quantity == 0)
             throw new IllegalArgumentException("Cannot add nothing");
-        }
-        else if(quantity < 0){
-            if(currentStock == null){
-                throw new IllegalArgumentException("Cannot remove more than existing");
-            }
-            if(currentStock + quantity < 0){
-                throw new IllegalArgumentException("Cannot remove more than existing");
-            }
-        }
+        else if(quantity < 0 && (currentStock == null || currentStock + quantity < 0))
+            throw new IllegalArgumentException("Cannot remove more than existing");
 
-        if(stocks.get(substance) != null){
+        if(currentStock == null){
+            stocks.put(substance, quantity);
+        } else {
             Double newStock = stocks.get(substance) + quantity;
             stocks.replace(substance, newStock);
-        } else {
-            stocks.put(substance, quantity);
         }
     }
 }
