@@ -48,7 +48,14 @@ public class Laboratory {
     }
 
     void make(String product, Double quantity){
+        Map<String, Double> reaction = reactions.get(product);
 
+        reaction.forEach((substance, neededQuantityPerUnit) -> {
+            double totalQuantityNeeded = quantity * neededQuantityPerUnit;
+            add(substance, -totalQuantityNeeded);
+        });
+
+        add(product, quantity);
     }
 
     void checkSubstanceValidity(String substance){
