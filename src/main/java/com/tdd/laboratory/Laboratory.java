@@ -22,6 +22,20 @@ public class Laboratory {
         if(!knownSubstances.contains(substance))
             throw new IllegalArgumentException("This substance does not exist");
 
+        Double currentStock = stocks.get(substance);
+
+        if(quantity == 0){
+            throw new IllegalArgumentException("Cannot add nothing");
+        }
+        else if(quantity < 0){
+            if(currentStock == null){
+                throw new IllegalArgumentException("Cannot remove more than existing");
+            }
+            if(currentStock + quantity < 0){
+                throw new IllegalArgumentException("Cannot remove more than existing");
+            }
+        }
+
         if(stocks.get(substance) != null){
             Double newStock = stocks.get(substance) + quantity;
             stocks.replace(substance, newStock);
