@@ -33,7 +33,12 @@ public class Laboratory {
             stocks.put(substance, quantity);
         } else {
             Double newStock = stocks.get(substance) + quantity;
-            stocks.replace(substance, newStock);
+
+            if(newStock == 0.0){
+                stocks.remove(substance);
+            } else {
+                stocks.replace(substance, newStock);
+            }
         }
     }
 }

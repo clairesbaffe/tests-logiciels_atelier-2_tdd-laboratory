@@ -14,6 +14,7 @@ class LaboratoryTests {
     @BeforeEach
     void setup(){
         laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+        laboratory.stocks.clear();
     }
 
     @Test
