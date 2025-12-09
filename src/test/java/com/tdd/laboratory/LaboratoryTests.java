@@ -34,4 +34,13 @@ class LaboratoryTests {
             laboratory.getQuantity("ZZZ");
         });
     }
+
+    @Test
+    void addToStock(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        laboratory.add("A", 2.0);
+
+        assertEquals(2.0, laboratory.getQuantity("A"));
+    }
 }

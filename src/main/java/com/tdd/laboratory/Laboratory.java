@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Laboratory {
-
     List<String> knownSubstances;
     HashMap<String, Double> stocks = new HashMap<>();
 
@@ -17,5 +16,9 @@ public class Laboratory {
             throw new IllegalArgumentException("This substance does not exist");
 
         return stocks.get(substance);
+    }
+
+    void add(String substance, Double quantity){
+
     }
 }
