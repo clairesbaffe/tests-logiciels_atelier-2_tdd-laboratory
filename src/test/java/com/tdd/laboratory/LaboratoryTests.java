@@ -73,4 +73,43 @@ class LaboratoryTests {
             laboratory.add("E", 2.0);
         });
     }
+
+    @Test
+    void addZeroQuantity(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.add("A", 0.0);
+        });
+    }
+
+    @Test
+    void addNegativeValueWhileStockIsNull(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.add("A", -2.0);
+        });
+    }
+
+    @Test
+    void addNegativeValueWhileStockIsEnough(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        laboratory.add("A", 2.0);
+        laboratory.add("A", -1.0);
+
+        assertEquals(1.0, laboratory.getQuantity("A"));
+    }
+
+    @Test
+    void addNegativeValueWhileStockIsNotEnough(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        laboratory.add("A", 1.0);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.add("A", -2.0);
+        });
+    }
 }
