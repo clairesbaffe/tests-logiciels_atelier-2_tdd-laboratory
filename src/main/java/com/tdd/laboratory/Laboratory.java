@@ -14,6 +14,14 @@ public class Laboratory {
             Map<String, Map<String, Double>> initReactions
     ){
         knownSubstances = substances;
+
+        initReactions.forEach((key, reaction) -> reaction.forEach((substance, quantity) -> {
+            if(!knownSubstances.contains(substance)){
+                throw new IllegalArgumentException("An unexisting substance is present in reactions list");
+            }
+        }));
+
+        reactions = initReactions;
     }
 
     Double getQuantity(String substance) {
