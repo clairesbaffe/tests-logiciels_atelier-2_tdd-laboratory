@@ -19,6 +19,14 @@ public class Laboratory {
     }
 
     void add(String substance, Double quantity){
-        stocks.put(substance, quantity);
+        if(!knownSubstances.contains(substance))
+            throw new IllegalArgumentException("This substance does not exist");
+
+        if(stocks.get(substance) != null){
+            Double substanceStock = stocks.get(substance);
+            stocks.replace(substance, substanceStock + quantity);
+        } else {
+            stocks.put(substance, quantity);
+        }
     }
 }
