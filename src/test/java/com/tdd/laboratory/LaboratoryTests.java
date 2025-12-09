@@ -43,4 +43,34 @@ class LaboratoryTests {
 
         assertEquals(2.0, laboratory.getQuantity("A"));
     }
+
+    @Test
+    void addMultipleSubstances(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        laboratory.add("A", 2.0);
+        laboratory.add("B", 3.0);
+
+        assertEquals(2.0, laboratory.getQuantity("A"));
+        assertEquals(3.0, laboratory.getQuantity("B"));
+    }
+
+    @Test
+    void addMultipleOfSameSubstance(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        laboratory.add("A", 2.0);
+        laboratory.add("A", 3.0);
+
+        assertEquals(5.0, laboratory.getQuantity("A"));
+    }
+
+    @Test
+    void addNonExistingSubstance(){
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.add("E", 2.0);
+        });
+    }
 }
