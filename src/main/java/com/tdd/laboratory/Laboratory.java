@@ -8,7 +8,7 @@ public class Laboratory {
     List<String> knownSubstances;
     HashMap<String, Double> stocks = new HashMap<>();
 
-    public Laboratory(){
+    public Laboratory(List<String> substances){
         knownSubstances = List.of("A", "B", "C", "D");
     }
 

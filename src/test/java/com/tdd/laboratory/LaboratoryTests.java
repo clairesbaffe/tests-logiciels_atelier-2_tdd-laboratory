@@ -10,16 +10,16 @@ class LaboratoryTests {
 
     @Test
     void initLaboratory() {
-        var laboratory = new Laboratory();
-
         List<String> list = List.of("A", "B", "C", "D");
+
+        var laboratory = new Laboratory(list);
 
         assertEquals(list, laboratory.knownSubstances);
     }
 
     @Test
     void getExistingSubstanceQuantity(){
-        var laboratory = new Laboratory();
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
 
         laboratory.stocks.put("A", 2.1);
 
@@ -28,10 +28,10 @@ class LaboratoryTests {
 
     @Test
     void getNonExistingSubstanceQuantity(){
-        var laboratory = new Laboratory();
+        var laboratory = new Laboratory(List.of("A", "B", "C", "D"));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            laboratory.getQuantity("E");
+            laboratory.getQuantity("ZZZ");
         });
     }
 }
