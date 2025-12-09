@@ -161,4 +161,21 @@ class LaboratoryTests {
             laboratory.make("ZZZ", 1.2);
         });
     }
+
+    @Test
+    void makeZeroProduct(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.make("P1", 0.0);
+        });
+    }
+
+    @Test
+    void makeNegativeQuantityProduct(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.make("P1", -1.0);
+        });
+
+        assertNull(laboratory.getQuantity("B"));
+        assertNull(laboratory.getQuantity("C"));
+    }
 }
