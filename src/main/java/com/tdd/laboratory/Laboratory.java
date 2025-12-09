@@ -23,8 +23,8 @@ public class Laboratory {
             throw new IllegalArgumentException("This substance does not exist");
 
         if(stocks.get(substance) != null){
-            Double substanceStock = stocks.get(substance);
-            stocks.replace(substance, substanceStock + quantity);
+            Double newStock = stocks.get(substance) + quantity;
+            stocks.replace(substance, newStock);
         } else {
             stocks.put(substance, quantity);
         }
