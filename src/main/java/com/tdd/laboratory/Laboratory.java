@@ -55,6 +55,11 @@ public class Laboratory {
         Map<String, Double> reaction = reactions.get(product);
 
         reaction.forEach((substance, neededQuantityPerUnit) -> {
+            if(getQuantity(substance) == null)
+                throw new IllegalArgumentException("At least one substance is missing");
+        });
+
+        reaction.forEach((substance, neededQuantityPerUnit) -> {
             double totalQuantityNeeded = quantity * neededQuantityPerUnit;
             add(substance, -totalQuantityNeeded);
         });
