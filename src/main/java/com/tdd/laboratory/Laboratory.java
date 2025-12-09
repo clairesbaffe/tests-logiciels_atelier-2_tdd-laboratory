@@ -21,12 +21,12 @@ public class Laboratory {
     }
 
     Double getQuantity(String substance) {
-        checkSubstanceValid(substance);
+        checkSubstanceAndProductValidity(substance);
         return stocks.get(substance);
     }
 
     void add(String substance, Double quantity){
-        checkSubstanceValid(substance);
+        checkSubstanceAndProductValidity(substance);
         Double currentStock = stocks.get(substance);
 
         if(quantity == 0)
@@ -50,5 +50,13 @@ public class Laboratory {
     void checkSubstanceValid(String substance){
         if(!knownSubstances.contains(substance))
             throw new IllegalArgumentException("This substance does not exist");
+    }
+
+    void checkSubstanceAndProductValidity(String substance){
+        if(!knownSubstances.contains(substance)){
+            if(!reactions.containsKey(substance)){
+                throw new IllegalArgumentException("This substance does not exist");
+            }
+        }
     }
 }
