@@ -9,7 +9,7 @@ public class Laboratory {
     HashMap<String, Double> stocks = new HashMap<>();
 
     public Laboratory(List<String> substances){
-        knownSubstances = List.of("A", "B", "C", "D");
+        knownSubstances = substances;
     }
 
     Double getQuantity(String substance) {
