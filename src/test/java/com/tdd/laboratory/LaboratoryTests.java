@@ -17,9 +17,9 @@ class LaboratoryTests {
         laboratory = new Laboratory(
                 List.of("A", "B", "C", "D"),
                 Map.of(
-                        "A", Map.of("B", 2.1, "C", 1.2),
-                        "C", Map.of("B", 3.4, "D", 0.8),
-                        "D", Map.of("A", 5.0, "B", 1.2)
+                        "P1", Map.of("B", 2.1, "C", 1.2),
+                        "P2", Map.of("B", 3.4, "D", 0.8),
+                        "P3", Map.of("A", 5.0, "B", 1.2)
                 )
         );
         laboratory.stocks.clear();
@@ -29,9 +29,9 @@ class LaboratoryTests {
     void initLaboratory() {
         List<String> list = List.of("A", "B", "C", "D");
         Map<String, Map<String, Double>> reactions = Map.of(
-                "A", Map.of("B", 2.1, "C", 1.2),
-                "C", Map.of("B", 3.4, "D", 0.8),
-                "D", Map.of("A", 5.0, "B", 1.2)
+                "P1", Map.of("B", 2.1, "C", 1.2),
+                "P2", Map.of("B", 3.4, "D", 0.8),
+                "P3", Map.of("A", 5.0, "B", 1.2)
         );
 
         assertEquals(list, laboratory.knownSubstances);
@@ -42,9 +42,9 @@ class LaboratoryTests {
     void initLaboratoryWithNonExistingSubstancesInReactions(){
         List<String> list = List.of("A", "B", "C", "D");
         Map<String, Map<String, Double>> reactions = Map.of(
-                "A", Map.of("B", 2.1, "C", 1.2),
-                "C", Map.of("E", 3.4, "D", 0.8),
-                "D", Map.of("A", 5.0, "B", 1.2)
+                "P1", Map.of("B", 2.1, "C", 1.2),
+                "P2", Map.of("E", 3.4, "D", 0.8),
+                "P3", Map.of("A", 5.0, "B", 1.2)
         );
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -91,7 +91,7 @@ class LaboratoryTests {
     }
 
     @Test
-    void addNonExistingSubstance(){
+    void addNonExistingSubstanceOrProduct(){
         assertThrows(IllegalArgumentException.class, () -> {
             laboratory.add("E", 2.0);
         });
@@ -134,5 +134,12 @@ class LaboratoryTests {
         laboratory.add("A", -2.0);
 
         assertNull(laboratory.getQuantity("A"));
+    }
+
+    @Test
+    void addProductToStock(){
+        laboratory.add("P1", 1.2);
+
+        assertEquals(1.2, laboratory.getQuantity("P1"));
     }
 }
