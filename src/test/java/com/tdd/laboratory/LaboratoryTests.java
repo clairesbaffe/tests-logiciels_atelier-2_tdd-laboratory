@@ -189,4 +189,16 @@ class LaboratoryTests {
 
         assertEquals(3.5, laboratory.getQuantity("B"));
     }
+
+    @Test
+    void makeMaxProductWithAvailableSubstances(){
+        laboratory.add("B", 3.5);
+        laboratory.add("C", 4.2);
+
+        laboratory.make("P1", 2.5);
+
+        assertEquals(1.6667, laboratory.getQuantity("P1"), 0.0001);
+        assertEquals(0.0, laboratory.getQuantity("B"));
+        assertEquals(2.1996, laboratory.getQuantity("C"), 0.0001);
+    }
 }
