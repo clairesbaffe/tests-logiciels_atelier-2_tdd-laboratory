@@ -198,7 +198,7 @@ class LaboratoryTests {
         laboratory.make("P1", 2.5);
 
         assertEquals(1.6667, laboratory.getQuantity("P1"), 0.0001);
-        assertEquals(0.0, laboratory.getQuantity("B"));
-        assertEquals(2.1996, laboratory.getQuantity("C"), 0.0001);
+        assertNull(laboratory.getQuantity("B"));
+        assertEquals(2.2, laboratory.getQuantity("C"), 0.0001);
     }
 }

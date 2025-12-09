@@ -54,17 +54,28 @@ public class Laboratory {
 
         Map<String, Double> reaction = reactions.get(product);
 
-        reaction.forEach((substance, neededQuantityPerUnit) -> {
+        double maxQuantityMakable = quantity;
+
+        for(Map.Entry<String, Double> reactionSubstance : reaction.entrySet()) {
+            String substance = reactionSubstance.getKey();
+            Double neededQuantityPerUnit = reactionSubstance.getValue();
+
             if(getQuantity(substance) == null)
                 throw new IllegalArgumentException("At least one substance is missing");
-        });
 
-        reaction.forEach((substance, neededQuantityPerUnit) -> {
             double totalQuantityNeeded = quantity * neededQuantityPerUnit;
+
+            if(totalQuantityNeeded > getQuantity(substance))
+                maxQuantityMakable = getQuantity(substance) / neededQuantityPerUnit;
+        }
+
+        double finalMaxQuantityMakable = maxQuantityMakable;
+        reaction.forEach((substance, neededQuantityPerUnit) -> {
+            double totalQuantityNeeded = finalMaxQuantityMakable * neededQuantityPerUnit;
             add(substance, -totalQuantityNeeded);
         });
 
-        add(product, quantity);
+        add(product, finalMaxQuantityMakable);
     }
 
     void checkSubstanceValidity(String substance){
