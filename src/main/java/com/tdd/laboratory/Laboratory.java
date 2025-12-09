@@ -47,6 +47,10 @@ public class Laboratory {
         }
     }
 
+    void make(String product, Double quantity){
+
+    }
+
     void checkSubstanceValidity(String substance){
         if(!knownSubstances.contains(substance))
             throw new IllegalArgumentException("This substance does not exist");

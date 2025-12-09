@@ -142,4 +142,16 @@ class LaboratoryTests {
 
         assertEquals(1.2, laboratory.getQuantity("P1"));
     }
+
+    @Test
+    void makeProductWithSubstancesInStock(){
+        laboratory.add("B", 3.5);
+        laboratory.add("C", 4.2);
+
+        laboratory.make("P1", 1.2);
+
+        assertEquals(1.2, laboratory.getQuantity("P1"));
+        assertEquals(0.98, laboratory.getQuantity("B"));
+        assertEquals(2.76, laboratory.getQuantity("C"));
+    }
 }
