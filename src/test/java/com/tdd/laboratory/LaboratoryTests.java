@@ -178,4 +178,15 @@ class LaboratoryTests {
         assertNull(laboratory.getQuantity("B"));
         assertNull(laboratory.getQuantity("C"));
     }
+
+    @Test
+    void makeProductWithMissingSubstance(){
+        laboratory.add("B", 3.5);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.make("P1", 1.0);
+        });
+
+        assertEquals(3.5, laboratory.getQuantity("B"));
+    }
 }
