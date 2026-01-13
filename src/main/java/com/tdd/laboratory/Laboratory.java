@@ -13,9 +13,11 @@ public class Laboratory {
     ){
         knownSubstances = substances;
 
+        Set<String> reactionNames = initReactions.keySet();
+
         initReactions.values().stream()
                 .flatMap(reaction -> reaction.keySet().stream())
-                .forEach(this::checkSubstanceValidity);
+                .forEach((reaction -> checkSubstanceAndProductValidityWithReactionNamesGiven(reaction, reactionNames)));
 
         reactions = initReactions;
     }
@@ -93,6 +95,15 @@ public class Laboratory {
 
     void checkSubstanceAndProductValidity(String substance){
         if(!knownSubstances.contains(substance) && !reactions.containsKey(substance)){
+            throw new IllegalArgumentException("This substance or product does not exist");
+        }
+    }
+
+    void checkSubstanceAndProductValidityWithReactionNamesGiven(
+            String substance,
+            Set<String> reactionNames
+    ){
+        if(!knownSubstances.contains(substance) && !reactionNames.contains(substance)){
             throw new IllegalArgumentException("This substance or product does not exist");
         }
     }
