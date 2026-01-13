@@ -83,11 +83,6 @@ public class Laboratory {
         add(product, maxBasedOnSubstances);
     }
 
-    void checkSubstanceValidity(String substance){
-        if(!knownSubstances.contains(substance))
-            throw new IllegalArgumentException("This substance does not exist");
-    }
-
     void checkProductValidity(String product){
         if(!reactions.containsKey(product))
             throw new IllegalArgumentException("This product does not exist");
@@ -99,10 +94,7 @@ public class Laboratory {
         }
     }
 
-    void checkSubstanceAndProductValidityWithReactionNamesGiven(
-            String substance,
-            Set<String> reactionNames
-    ){
+    void checkSubstanceAndProductValidityWithReactionNamesGiven(String substance, Set<String> reactionNames){
         if(!knownSubstances.contains(substance) && !reactionNames.contains(substance)){
             throw new IllegalArgumentException("This substance or product does not exist");
         }
