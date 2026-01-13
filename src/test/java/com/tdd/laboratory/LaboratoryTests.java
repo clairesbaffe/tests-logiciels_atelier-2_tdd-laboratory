@@ -19,7 +19,8 @@ class LaboratoryTests {
                 Map.of(
                         "P1", Map.of("B", 2.1, "C", 1.2),
                         "P2", Map.of("B", 3.4, "D", 0.8),
-                        "P3", Map.of("A", 5.0, "B", 1.2)
+                        "P3", Map.of("A", 5.0, "B", 1.2),
+                        "P4", Map.of("P1", 3.1, "P2", 2.2)
                 )
         );
         laboratory.stocks.clear();
@@ -31,7 +32,8 @@ class LaboratoryTests {
         Map<String, Map<String, Double>> reactions = Map.of(
                 "P1", Map.of("B", 2.1, "C", 1.2),
                 "P2", Map.of("B", 3.4, "D", 0.8),
-                "P3", Map.of("A", 5.0, "B", 1.2)
+                "P3", Map.of("A", 5.0, "B", 1.2),
+                "P4", Map.of("P1", 3.1, "P2", 2.2)
         );
 
         assertEquals(list, laboratory.knownSubstances);
@@ -200,5 +202,17 @@ class LaboratoryTests {
         assertEquals(1.6667, laboratory.getQuantity("P1"), 0.0001);
         assertNull(laboratory.getQuantity("B"));
         assertEquals(2.2, laboratory.getQuantity("C"), 0.0001);
+    }
+
+    @Test
+    void makeProductWithProductsInStock(){
+        laboratory.add("P1", 3.5);
+        laboratory.add("P2", 4.2);
+
+        laboratory.make("P4", 1.0);
+
+        assertEquals(1.0, laboratory.getQuantity("P4"));
+        assertEquals(0.4, laboratory.getQuantity("P1"), 0.0001);
+        assertEquals(2.0, laboratory.getQuantity("P2"), 0.0001);
     }
 }
