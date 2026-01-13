@@ -215,4 +215,31 @@ class LaboratoryTests {
         assertEquals(0.4, laboratory.getQuantity("P1"), 0.0001);
         assertEquals(2.0, laboratory.getQuantity("P2"), 0.0001);
     }
+
+    @Test
+    void makeProductWithMissingProductAndSubstance(){
+        laboratory.add("B", 3.5);
+        laboratory.add("P1", 3.5);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            laboratory.make("P4", 1.0);
+        });
+
+        assertEquals(3.5, laboratory.getQuantity("B"));
+        assertEquals(3.5, laboratory.getQuantity("P1"));
+    }
+
+
+    @Test
+    void makeProductWithMissingProductButSubstancesInStock(){
+        laboratory.add("P1", 3.5);
+        laboratory.add("B", 3.5);
+        laboratory.add("D", 2.5);
+
+        laboratory.make("P4", 1.0);
+
+        assertEquals(0.4, laboratory.getQuantity("P1"));
+        assertEquals(0.1, laboratory.getQuantity("B"));
+        assertEquals(1.7, laboratory.getQuantity("D"));
+    }
 }
