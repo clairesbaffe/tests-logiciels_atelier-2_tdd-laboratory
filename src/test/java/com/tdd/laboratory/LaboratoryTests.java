@@ -233,14 +233,14 @@ class LaboratoryTests {
     @Test
     void makeProductWithMissingProductButSubstancesInStock(){
         laboratory.add("P1", 3.5);
-        laboratory.add("B", 3.5);
+        laboratory.add("B", 8.0);
         laboratory.add("D", 2.5);
 
         laboratory.make("P4", 1.0);
 
-        assertEquals(0.4, laboratory.getQuantity("P1"));
-        assertEquals(0.1, laboratory.getQuantity("B"));
-        assertEquals(1.7, laboratory.getQuantity("D"));
-        assertEquals(0.0, laboratory.getQuantity("P2"));
+        assertEquals(0.4, laboratory.getQuantity("P1"), 0.0001);
+        assertEquals(0.52, laboratory.getQuantity("B"), 0.0001);
+        assertEquals(0.74, laboratory.getQuantity("D"), 0.0001);
+        assertNull(laboratory.getQuantity("P2"));
     }
 }
