@@ -51,40 +51,17 @@ public class Laboratory {
     }
 
     void make(String product, Double quantity){
-        checkProductValidity(product);
         if(quantity <= 0)
             throw new IllegalArgumentException("Cannot make negative quantity");
 
+        checkProductValidity(product);
+
         Map<String, Double> reaction = reactions.get(product);
 
-        double maxBasedOnSubstances = reaction.entrySet().stream()
-                .mapToDouble(entry -> {
-                    String substance = entry.getKey();
-                    Double neededQuantityPerUnit = entry.getValue();
-                    Double availableQuantity = getQuantity(substance);
-
-                    double totalQuantityNeeded = quantity * neededQuantityPerUnit;
-
-                    if(availableQuantity == null){
-                        if(reactions.containsKey(substance)){
-                            availableQuantity = calculateProductMaxAvailableQuantityByMaking(substance);
-                        } else
-                            throw new IllegalArgumentException("At least one substance is missing");
-                    } else if(availableQuantity < totalQuantityNeeded && reactions.containsKey(substance)){
-                        availableQuantity += calculateProductMaxAvailableQuantityByMaking(substance);
-                    }
-
-                    if(totalQuantityNeeded > availableQuantity){
-                        return availableQuantity / neededQuantityPerUnit;
-                    }
-                    else
-                        return quantity;
-                })
-                .min()
-                .orElse(quantity);
+        double maxMakable = calculateMaxMakable(reaction, quantity);
 
         reaction.forEach((substance, neededQuantityPerUnit) -> {
-            double totalQuantityNeeded = maxBasedOnSubstances * neededQuantityPerUnit;
+            double totalQuantityNeeded = maxMakable * neededQuantityPerUnit;
 
             if(reactions.containsKey(substance)){
                 Double availableQuantity = getQuantity(substance);
@@ -96,7 +73,7 @@ public class Laboratory {
             add(substance, -totalQuantityNeeded);
         });
 
-        add(product, maxBasedOnSubstances);
+        add(product, maxMakable);
     }
 
     void checkProductValidity(String product){
@@ -116,23 +93,46 @@ public class Laboratory {
         }
     }
 
+    double calculateMaxMakable(Map<String, Double> reaction, double quantity){
+        return reaction.entrySet().stream()
+            .mapToDouble(entry -> {
+                String substance = entry.getKey();
+                Double neededQuantityPerUnit = entry.getValue();
+                Double availableQuantity = getQuantity(substance);
+
+                double totalQuantityNeeded = quantity * neededQuantityPerUnit;
+
+                if(availableQuantity == null){
+                    if(reactions.containsKey(substance))
+                        availableQuantity = calculateProductMaxAvailableQuantityByMaking(substance);
+                    else
+                        throw new IllegalArgumentException("At least one substance is missing");
+                } else if(availableQuantity < totalQuantityNeeded && reactions.containsKey(substance)){
+                    availableQuantity += calculateProductMaxAvailableQuantityByMaking(substance);
+                }
+
+                if(totalQuantityNeeded > availableQuantity) return availableQuantity / neededQuantityPerUnit;
+                else return quantity;
+            })
+            .min()
+            .orElse(quantity);
+    }
+
     double calculateProductMaxAvailableQuantityByMaking(String product){
         Map<String, Double> reaction = reactions.get(product);
 
         return reaction.entrySet().stream()
-                .mapToDouble(entry -> {
-                    String substance = entry.getKey();
+            .mapToDouble(entry -> {
+                String substance = entry.getKey();
+                Double neededQuantityPerUnit = entry.getValue();
+                Double availableQuantity = getQuantity(substance);
 
+                if(availableQuantity == null)
+                    throw new IllegalArgumentException("At least one substance is missing");
 
-                    Double neededQuantityPerUnit = entry.getValue();
-                    Double availableQuantity = getQuantity(substance);
-
-                    if(availableQuantity == null)
-                        throw new IllegalArgumentException("At least one substance is missing");
-
-                    return availableQuantity / neededQuantityPerUnit;
-                })
-                .min()
-                .orElse(0.0);
+                return availableQuantity / neededQuantityPerUnit;
+            })
+            .min()
+            .orElse(0.0);
     }
 }
