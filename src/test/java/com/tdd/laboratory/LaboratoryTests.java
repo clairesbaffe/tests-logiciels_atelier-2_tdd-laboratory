@@ -241,5 +241,6 @@ class LaboratoryTests {
         assertEquals(0.4, laboratory.getQuantity("P1"));
         assertEquals(0.1, laboratory.getQuantity("B"));
         assertEquals(1.7, laboratory.getQuantity("D"));
+        assertEquals(0.0, laboratory.getQuantity("P2"));
     }
 }
