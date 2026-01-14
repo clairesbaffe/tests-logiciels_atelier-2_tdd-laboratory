@@ -33,8 +33,9 @@ public class Laboratory {
 
         if(quantity == 0)
             throw new IllegalArgumentException("Cannot add nothing");
-        else if(quantity < 0 && (currentStock == null || currentStock + quantity < 0))
+        else if(quantity < 0 && (currentStock == null || currentStock + quantity < 0)){
             throw new IllegalArgumentException("Cannot remove more than existing");
+        }
 
         if(currentStock == null){
             stocks.put(substance, quantity);
@@ -62,13 +63,20 @@ public class Laboratory {
                     Double neededQuantityPerUnit = entry.getValue();
                     Double availableQuantity = getQuantity(substance);
 
-                    if(availableQuantity == null)
-                        throw new IllegalArgumentException("At least one substance is missing");
-
                     double totalQuantityNeeded = quantity * neededQuantityPerUnit;
 
-                    if(totalQuantityNeeded > availableQuantity)
+                    if(availableQuantity == null){
+                        if(reactions.containsKey(substance)){
+                            availableQuantity = calculateProductMaxAvailableQuantityByMaking(substance);
+                        } else
+                            throw new IllegalArgumentException("At least one substance is missing");
+                    } else if(availableQuantity < totalQuantityNeeded && reactions.containsKey(substance)){
+                        availableQuantity += calculateProductMaxAvailableQuantityByMaking(substance);
+                    }
+
+                    if(totalQuantityNeeded > availableQuantity){
                         return availableQuantity / neededQuantityPerUnit;
+                    }
                     else
                         return quantity;
                 })
@@ -77,6 +85,14 @@ public class Laboratory {
 
         reaction.forEach((substance, neededQuantityPerUnit) -> {
             double totalQuantityNeeded = maxBasedOnSubstances * neededQuantityPerUnit;
+
+            if(reactions.containsKey(substance)){
+                Double availableQuantity = getQuantity(substance);
+
+                if(availableQuantity == null) make(substance, totalQuantityNeeded);
+                else if(availableQuantity < totalQuantityNeeded) make(substance, totalQuantityNeeded - availableQuantity);
+            }
+
             add(substance, -totalQuantityNeeded);
         });
 
@@ -98,5 +114,25 @@ public class Laboratory {
         if(!knownSubstances.contains(substance) && !reactionNames.contains(substance)){
             throw new IllegalArgumentException("This substance or product does not exist");
         }
+    }
+
+    double calculateProductMaxAvailableQuantityByMaking(String product){
+        Map<String, Double> reaction = reactions.get(product);
+
+        return reaction.entrySet().stream()
+                .mapToDouble(entry -> {
+                    String substance = entry.getKey();
+
+
+                    Double neededQuantityPerUnit = entry.getValue();
+                    Double availableQuantity = getQuantity(substance);
+
+                    if(availableQuantity == null)
+                        throw new IllegalArgumentException("At least one substance is missing");
+
+                    return availableQuantity / neededQuantityPerUnit;
+                })
+                .min()
+                .orElse(0.0);
     }
 }
