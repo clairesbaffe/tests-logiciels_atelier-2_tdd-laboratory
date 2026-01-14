@@ -34,7 +34,7 @@ public class Laboratory {
         if(quantity == 0)
             throw new IllegalArgumentException("Cannot add nothing");
         else if(quantity < 0 && (currentStock == null || currentStock + quantity < 0)){
-            throw new IllegalArgumentException("Cannot remove more than existing");
+            throw new IllegalArgumentException("Cannot remove more " + substance + " than existing");
         }
 
         if(currentStock == null){
@@ -52,7 +52,7 @@ public class Laboratory {
 
     void make(String product, Double quantity){
         if(quantity <= 0)
-            throw new IllegalArgumentException("Cannot make negative quantity");
+            throw new IllegalArgumentException("Cannot make negative quantity of " + product);
 
         checkProductValidity(product);
 
@@ -106,7 +106,7 @@ public class Laboratory {
                     if(reactions.containsKey(substance))
                         availableQuantity = calculateProductMaxAvailableQuantityByMaking(substance);
                     else
-                        throw new IllegalArgumentException("At least one substance is missing");
+                        throw new IllegalArgumentException(substance + " substance is missing");
                 } else if(availableQuantity < totalQuantityNeeded && reactions.containsKey(substance)){
                     availableQuantity += calculateProductMaxAvailableQuantityByMaking(substance);
                 }
@@ -128,7 +128,7 @@ public class Laboratory {
                 Double availableQuantity = getQuantity(substance);
 
                 if(availableQuantity == null)
-                    throw new IllegalArgumentException("At least one substance is missing");
+                    throw new IllegalArgumentException(substance + " substance is missing");
 
                 return availableQuantity / neededQuantityPerUnit;
             })
